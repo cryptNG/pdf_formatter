@@ -2,13 +2,13 @@ package pdf.formatter.pdf_formatter;
 
 import java.net.URI;
 import java.util.List;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
-
 import io.github.classgraph.ClassGraph;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.info.Info;
 import pdf.formatter.pdf_formatter.application.Initializer;
 import pdf.formatter.pdf_formatter.controllers.*;
 
@@ -17,7 +17,7 @@ import pdf.formatter.pdf_formatter.controllers.*;
 @ComponentScan(basePackageClasses = OrderController.class) // it only detects components automatically in the root
 
 @ComponentScan(basePackageClasses = Initializer.class) // it only detects components automatically in the root folder
-
+@OpenAPIDefinition(info = @Info(title = "PDF Formatter API", version = "1.0", description = "Documentation PDF Formatter API v1.0"))
 public class PdfFormatterApplication {
 
 	public static void main(String[] args) {
@@ -26,6 +26,8 @@ public class PdfFormatterApplication {
 	}
 
 	private static void printEnvironment(String[] args) {
+		String prop = PropertiesExtractor.getProperty("test");
+		System.out.println("From Properties extractor: " + prop);
 		System.out.println("######################### ENVIRONMENT CONFIG #########################");
 		String logBackPath = System.getenv("LOGBACK_CONFIG_FILE");
 		if (StringUtils.isAllBlank(logBackPath)) {

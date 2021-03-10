@@ -17,7 +17,6 @@ public class Initializer {
 
   @Autowired
   private ApplicationContext applicationContext;
-
   Logger Log = LoggerFactory.getLogger(Initializer.class);
 
   @Bean

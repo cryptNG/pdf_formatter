@@ -18,6 +18,9 @@
 		<java.version>11</java.version>
 	</properties>
 
+
+
+
 	<dependencies>
 
 
@@ -248,6 +251,22 @@
           <version>3.8.0</version>
         </plugin>
 		</plugins>
+
+
+    <resources>     
+      <resource>
+        <directory>src/main/assembly</directory>
+        <filtering>true</filtering>
+    </resource>
+    <resource>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering>
+    </resource>
+    <resource>
+        <directory>src/main/config</directory>
+        <filtering>true</filtering>
+    </resource>           
+    </resources>
 		
 	</build>
 
