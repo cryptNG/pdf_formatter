@@ -26,14 +26,19 @@ public class PdfFormatterApplication {
 	}
 
 	private static void printEnvironment(String[] args) {
-		String prop = PropertiesExtractor.getProperty("test");
-		System.out.println("From Properties extractor: " + prop);
+
 		System.out.println("######################### ENVIRONMENT CONFIG #########################");
 		String logBackPath = System.getenv("LOGBACK_CONFIG_FILE");
 		if (StringUtils.isAllBlank(logBackPath)) {
 			System.out.println("ENVIRONMENT VARIABLE [LOGBACK_CONFIG_FILE] NOT SET");
 		} else {
 			System.out.println("ENVIRONMENT VARIABLE [LOGBACK_CONFIG_FILE] = " + logBackPath);
+		}
+		String httpsEnabled = System.getenv("HTTPS_ENABLED");
+		if (StringUtils.isAllBlank(httpsEnabled)) {
+			System.out.println("ENVIRONMENT VARIABLE [HTTPS_ENABLED] NOT SET (" + Boolean.valueOf(httpsEnabled) + ")");
+		} else {
+			System.out.println("ENVIRONMENT VARIABLE [HTTPS_ENABLED] = " + httpsEnabled);
 		}
 		System.out.println("-------");
 		List<URI> classpath = new ClassGraph().getClasspathURIs();

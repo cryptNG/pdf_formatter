@@ -19,10 +19,6 @@ public class Order {
 
     private @Id @GeneratedValue Long ID;
     String requestId;
-    @Lob
-    String xmlData;
-    @Lob
-    String xslData;
     ResultType resultType;
 
     // ConversionSource Source /HTML/XMLXSL/FO Make possible to deliver fo document
@@ -41,24 +37,19 @@ public class Order {
     public Order() {
     }
 
-    public Order(String xmlData, String xslData, ResultType expectedResultType, String requestId) {
+    public Order(ResultType expectedResultType, String requestId) {
         this.resultType = expectedResultType;
         this.requestId = requestId;
         this.state = "Created";
         this.creationDate = new Date();
-        this.xslData = xslData;
-        this.xmlData = xmlData;
     }
 
-    public Order(String xmlData, String xslData, ResultType expectedResultType, String requestId,
-            Date documentCreationDate) {
+    public Order(ResultType expectedResultType, String requestId, Date documentCreationDate) {
         this.documentCreationDate = documentCreationDate;
         this.resultType = expectedResultType;
         this.requestId = requestId;
         this.state = "Created";
         this.creationDate = new Date();
-        this.xslData = xslData;
-        this.xmlData = xmlData;
     }
 
     public void setDocumentData(byte[] documentBytes) {
@@ -103,14 +94,6 @@ public class Order {
 
     public void setId(Long id) {
         this.ID = id;
-    }
-
-    public String getXmlData() {
-        return this.xmlData;
-    }
-
-    public String getXslData() {
-        return this.xslData;
     }
 
     public String getRequestId() {

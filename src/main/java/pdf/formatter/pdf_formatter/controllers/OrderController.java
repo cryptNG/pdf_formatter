@@ -1,5 +1,6 @@
 package pdf.formatter.pdf_formatter.controllers;
 
+import java.util.Date;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -41,40 +42,62 @@ public class OrderController {
             MediaType.APPLICATION_JSON_VALUE }, produces = { MediaType.TEXT_PLAIN_VALUE })
     // @PostMapping("/orders")
     public String PostOrderAsync(@RequestBody OrderPo newOrderPo) {
-        Order orderToCreate = new Order(newOrderPo.XmlData, newOrderPo.XslData, newOrderPo.ResultType,
-                newOrderPo.RequestId);
+        Order orderToCreate = new Order(newOrderPo.ResultType, newOrderPo.RequestId);
 
         String methodName = new Object() {
         }.getClass().getEnclosingMethod().getName();
         Log.info("POST (/orders) " + "[" + methodName + "] called");
 
         Order checkAlreadyExists = _repository.findByRequestId(orderToCreate.getRequestId());
+
         if (checkAlreadyExists != null) {
             return checkAlreadyExists.getRequestId();
         }
 
-        Order resultOrder = _repository.save(orderToCreate);
-        _pool.submit(() -> configureAndBeginOrder(resultOrder));
+        Order resultOrder = _repository.save(orderToCreate); // do not save xml/xsl
+        _pool.submit(() -> configureAndBeginOrder(newOrderPo.XmlData, newOrderPo.XslData, newOrderPo.RequestId));
 
         // orderMan.OrderPdfGenerate(resultOrder, _repository);
         // TASK ID == ORDER ID
         return resultOrder.getRequestId();
     }
 
-    private void configureAndBeginOrder(Order orderToGenerate) {
+    private void configureAndBeginOrder(String xmlData, String xslData, String requestId) {
         OrderManager orderMan = new OrderManager();
 
-        Future<?> future = _pool.submit(() -> orderMan.OrderPdfGenerate(orderToGenerate, _repository));
+        Future<byte[]> future = _pool.submit(() -> orderMan.OrderPdfGenerate(xmlData, xslData));
+        byte[] resultDocumentData = null;
+        Order newOrder = null;
+        try {
+            newOrder = _repository.findByRequestId(requestId);
+        } catch (Exception e) {
+            Log.error(e.getMessage());
+            return;
+        }
 
         try {
-            future.get();
+            resultDocumentData = future.get();
+            newOrder.setDocumentData(resultDocumentData);
+            newOrder.setDocumentCreationDate(new Date());
+            newOrder.setState("Finished");
+            Log.info("Document generated for " + newOrder.getRequestId());
         } catch (InterruptedException e) {
             Log.error(e.getMessage());
+            newOrder.setState("Error");
             // Thread.currentThread().interrupt(); // Reset interrupted status
         } catch (ExecutionException e) {
             // Throwable exception = e.getCause();
             Log.error(e.getMessage());
+            newOrder.setState("Error");
             // Forward to exception reporter
+        }
+
+        try {
+            _repository.save(newOrder);
+        } catch (Exception e) {
+            Log.error("Could not save document in order due to exception: " + e.getMessage());
+            e.printStackTrace();
+
         }
     }
 
@@ -87,6 +110,9 @@ public class OrderController {
         Log.info("GET (/orders/" + requestId + "/state) " + "[" + methodName + "] called");
 
         Order currentOrder = _repository.findByRequestId(requestId);
+        if (currentOrder == null) {
+            return "NotCreatedYet";
+        }
         // If public, return state object with statechangeddate, to determine processing
         // time
         return currentOrder.getState(); // Should this be ENUM?
@@ -107,6 +133,7 @@ public class OrderController {
         byte[] docData = currentOrder.getDocumentData();
         PdfDocumentPo returnDoc = new PdfDocumentPo(DatatypeConverter.printBase64Binary(docData));
         returnDoc.setCreationDate(currentOrder.getDocumentCreationDate());
+        _repository.delete(currentOrder);
         return returnDoc;
     }
 

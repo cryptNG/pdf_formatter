@@ -153,10 +153,6 @@
 
 
 
-<dependency>
-	<groupId>org.springframework.boot</groupId>
-	<artifactId>spring-boot-starter-hateoas</artifactId>
-</dependency>
 
 <!-- For OpenAPI Spec @ http://localhost:8080/v3/api-docs/ -->
 <dependency>
@@ -169,7 +165,7 @@
 <dependency>
     <groupId>org.springdoc</groupId>
     <artifactId>springdoc-openapi-ui</artifactId>
-    <version>1.5.2</version>
+    <version>1.5.5</version>
 </dependency>
 
 
@@ -245,6 +241,16 @@
         <plugin>
           <artifactId>maven-resources-plugin</artifactId>
           <version>3.0.2</version>
+          <configuration>
+            <delimiters>
+                <delimiter>@</delimiter>
+            </delimiters>
+            <nonFilteredFileExtensions>
+                <nonFilteredFileExtension>p12</nonFilteredFileExtension>
+                <nonFilteredFileExtension>pfx</nonFilteredFileExtension>
+                <nonFilteredFileExtension>pem</nonFilteredFileExtension>
+            </nonFilteredFileExtensions>
+        </configuration>
         </plugin>
         <plugin>
           <artifactId>maven-compiler-plugin</artifactId>
