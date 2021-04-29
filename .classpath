@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-<!--	<classpathentry kind="lib" path="src/main/lib/j4ljrbarcode.jar"/>
+	<classpathentry kind="lib" path="src/main/lib/j4ljrbarcode.jar"/>
 	<classpathentry kind="lib" path="src/main/lib/rbarcode-fop2.jar"/>
 	<classpathentry kind="lib" path="src/main/lib/rbarcode.jar"/>
-	<classpathentry kind="lib" path="src/main/lib/qrcode.jar"/>-->
+	<classpathentry kind="lib" path="src/main/lib/qrcode.jar"/>
 	<classpathentry excluding="**" kind="src" output="target/classes" path="src/main/resources">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>

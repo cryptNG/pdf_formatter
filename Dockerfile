@@ -1,10 +1,10 @@
 #USING MAVEN LICENSED UNDER APACHE 2.0
-FROM noisycatz/winmaven:adoptopenjdk15_hotspot_mvn3.6.3 as builder
+FROM noisycatz/winmaven:adoptopenjdk15_hotspot_mvn3.6.3-windowsservercore-1809 as builder
 ENV LOGBACK_CONFIG_FILE=logback.xml
 WORKDIR /pdf_formatter
 COPY / ./
 RUN mvn clean package
-FROM adoptopenjdk:hotspot-windowsservercore-ltsc2016 as runner
+FROM adoptopenjdk:hotspot-windowsservercore-1809 as runner
 ENV LOGBACK_CONFIG_FILE=logback.xml
 RUN echo SET CONFIG: $env:LOGBACK_CONFIG_FILE
 WORKDIR /app

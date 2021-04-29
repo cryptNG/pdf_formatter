@@ -1,9 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: pdf.formatter.pdf_formatter.PdfFormatterApplicationTests
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 2.902 s <<< FAILURE! - in pdf.formatter.pdf_formatter.PdfFormatterApplicationTests
-contextLoads  Time elapsed: 0.001 s  <<< ERROR!
-java.lang.IllegalStateException: Failed to load ApplicationContext
-Caused by: org.springframework.beans.factory.BeanDefinitionStoreException: Failed to parse configuration class [pdf.formatter.pdf_formatter.PdfFormatterApplication]; nested exception is java.io.FileNotFoundException: Could not open ServletContext resource [/application.properties]
-Caused by: java.io.FileNotFoundException: Could not open ServletContext resource [/application.properties]
-
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 7.634 s - in pdf.formatter.pdf_formatter.PdfFormatterApplicationTests
