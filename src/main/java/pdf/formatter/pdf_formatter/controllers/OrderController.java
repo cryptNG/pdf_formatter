@@ -83,11 +83,15 @@ public class OrderController {
             Log.info("Document generated for " + newOrder.getRequestId());
         } catch (InterruptedException e) {
             Log.error(e.getMessage());
+            newOrder.setDocumentData(e.getMessage().getBytes());
+            newOrder.setDocumentCreationDate(new Date());
             newOrder.setState("Error");
             // Thread.currentThread().interrupt(); // Reset interrupted status
         } catch (ExecutionException e) {
             // Throwable exception = e.getCause();
             Log.error(e.getMessage());
+            newOrder.setDocumentData(e.getMessage().getBytes());
+            newOrder.setDocumentCreationDate(new Date());
             newOrder.setState("Error");
             // Forward to exception reporter
         }
