@@ -11,7 +11,7 @@ pdf\formatter\pdf_formatter\controllers\OrderController$1.class
 pdf\formatter\pdf_formatter\exceptionHandling\DocumentNotFoundAdvice.class
 pdf\formatter\pdf_formatter\exceptionHandling\OrderNotFoundException.class
 pdf\formatter\pdf_formatter\repositories\BaseRepository.class
-pdf\formatter\presentation\PdfDocumentPo.class
+pdf\formatter\presentation\OrderResultPo.class
 pdf\formatter\pdf_formatter\repositories\OrderRepository.class
 pdf\formatter\presentation\OrderPo.class
 pdf\formatter\pdf_formatter\PdfFormatterApplication.class

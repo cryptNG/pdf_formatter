@@ -37,6 +37,7 @@ public class PdfGenerator {
             stylesheet = compiler.compile(xsl);
         } catch (Exception ex) {
             Log.error(ex.getMessage());
+            throw new Exception("Could not compile XSLT: " + ex.getMessage());
         }
 
         Serializer out = processor.newSerializer();
@@ -61,6 +62,7 @@ public class PdfGenerator {
             pdfDst = new SAXDestination(fop.getDefaultHandler());
         } catch (Exception ex) {
             Log.error(ex.getMessage());
+            throw new Exception("Could not prepare transformation: " + ex.getMessage());
         }
 
         try {
@@ -68,7 +70,7 @@ public class PdfGenerator {
 
         } catch (Exception ex) {
             Log.error(ex.getMessage());
-            throw new Exception("Could not create file");
+            throw new Exception("Could not create file: " + ex.getMessage());
         }
         out.close();
         baos.close();

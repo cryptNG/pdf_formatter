@@ -10,9 +10,9 @@
 	</parent>
 	<groupId>pdf.formatter</groupId>
 	<artifactId>pdf_formatter</artifactId>
-	<version>1.4.0</version>
+	<version>1.4.1</version>
 	<name>pdf_formatter</name>
-	<description>Demo project for Spring Boot</description>
+	<description>PDF Distiller Server from CryptNG</description>
 
 	<properties>
 		<java.version>11</java.version>

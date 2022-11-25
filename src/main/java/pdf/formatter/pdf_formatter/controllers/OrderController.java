@@ -23,7 +23,7 @@ import pdf.formatter.pdf_formatter.entities.Order;
 import pdf.formatter.pdf_formatter.repositories.OrderRepository;
 import pdf.formatter.pdf_formatter.tooling.OrderManager;
 import pdf.formatter.presentation.OrderPo;
-import pdf.formatter.presentation.PdfDocumentPo;
+import pdf.formatter.presentation.OrderResultPo;
 
 @RestController
 public class OrderController {
@@ -125,7 +125,7 @@ public class OrderController {
     @RequestMapping(value = "/orders/{requestId}/document", method = RequestMethod.GET, consumes = {
             MediaType.ALL_VALUE }, produces = { MediaType.APPLICATION_JSON_VALUE })
     // @GetMapping("/orders/{requestId}/document")
-    public PdfDocumentPo GetPdfDocumentObject(@PathVariable String requestId) {
+    public OrderResultPo GetPdfDocumentObject(@PathVariable String requestId) {
         String methodName = new Object() {
         }.getClass().getEnclosingMethod().getName();
         Log.info("GET (/orders/" + requestId + "/document) " + "[" + methodName + "] called");
@@ -134,8 +134,12 @@ public class OrderController {
         if (currentOrder == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Unable to find resource");
         }
+        if(currentOrder.getState() == "Created")
+        {
+            throw new ResponseStatusException(HttpStatus.ACCEPTED, "The order has been accepted for processing, but is not finished yet");
+        }
         byte[] docData = currentOrder.getDocumentData();
-        PdfDocumentPo returnDoc = new PdfDocumentPo(DatatypeConverter.printBase64Binary(docData));
+        OrderResultPo returnDoc = new OrderResultPo(DatatypeConverter.printBase64Binary(docData),currentOrder.getState());
         returnDoc.setCreationDate(currentOrder.getDocumentCreationDate());
         _repository.delete(currentOrder);
         return returnDoc;
